@@ -1,0 +1,28 @@
+services:
+
+  mysql-db:
+    container_name: mysql-practice
+    image: mysql:latest
+    env_file:
+      - ".dev.env"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    networks:
+      - mysql-phpmyadmin
+
+  phpmyadmin:
+    depends_on:
+      - mysql-db
+    container_name: phpmyadmin-practice
+    image: phpmyadmin/phpmyadmin:latest
+    env_file:
+      - ".dev.env"
+    ports:
+      - "8080:80"
+    networks:
+      - mysql-phpmyadmin
+
+networks:
+  mysql-phpmyadmin:
