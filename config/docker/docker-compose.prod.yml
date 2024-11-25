@@ -6,8 +6,6 @@ services:
     build:
       context: ${PROJECT_DIR}
       dockerfile: ${PROJECT_DIR}/config/docker/Dockerfile.dev
-    volumes:
-      - ${PROJECT_DIR}/config/database:/home/database
     restart: always
     networks:
       - network-gaos
@@ -17,13 +15,13 @@ services:
       - "${APP_PORT}:8080"
     depends_on:
       - mysql-db
-    command: ["/home/database/migrations.sh"]
 
   mysql-db:
     container_name: mysql-gaos
     image: mysql:latest
     volumes:
       - ${PROJECT_DIR}/mysql-data:/var/lib/mysql
+      - ${PROJECT_DIR}/config/database:/home/database
     networks:
       - network-gaos
     restart: always

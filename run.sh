@@ -39,6 +39,11 @@ elif [ $1 == "down-prod" ]; then
     check_env_file "prod"
     docker compose -f config/docker/docker-compose.yml -f config/docker-compose.prod.yml --env-file $ENV_FILE down
     clear
+elif [ $1 == "migrate" ]; then
+    echo "Migrate database"
+    CONTAINER_IMAGE=$(docker ps | grep mysql | awk '{print $1}')
+    docker exec -it $CONTAINER_IMAGE bash /home/database/migrations.sh
+    clear
 else
     echo "Error: Invalid argument."
     echo "Use: $0 [dev or prod]"

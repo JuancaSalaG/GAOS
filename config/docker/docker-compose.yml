@@ -2,48 +2,49 @@ name: integrador-gaos
 services:
 
   app:
-    container_name: app-gaos
+    container_name: gaos-app
+    image: gaos-app
     build:
       context: ${PROJECT_DIR}
       dockerfile: ${PROJECT_DIR}/config/docker/Dockerfile.dev
-    volumes:
-      - ${PROJECT_DIR}/config/database:/home/database
     networks:
       - network-gaos
     env_file:
       - ${PROJECT_DIR}/config/.dev.env
     ports:
       - "${APP_PORT}:8080"
-    #depends_on:
-      #- mysql-db
-    #command: ["/home/database/migrations.sh"]
+    depends_on:
+      - mysql-db
+    volumes:
+      - ${PROJECT_DIR}/gaos:/home/gaos
 
-  #mysql-db:
-  #  container_name: mysql-gaos
-  #  image: mysql:latest
-  #  volumes:
-  #    - ${PROJECT_DIR}/mysql-data:/var/lib/mysql
-  #  networks:
-  #    - network-gaos
-  #  ports:
-  #    - "${MYSQL_PORT}:3306"
-  #  environment:
-  #    - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-  #    - MYSQL_DATABASE=${MYSQL_DATABASE}
-  #    - MYSQL_USER=${MYSQL_USER}
-  #    - MYSQL_PASSWORD=${MYSQL_PASSWORD}
-#
-  #phpmyadmin:
-  #  depends_on:
-  #    - mysql-db
-  #  container_name: phpmyadmin-gaos
-  #  image: phpmyadmin/phpmyadmin:latest
-  #  networks:
-  #    - network-gaos
-  #  environment:
-  #    - PMA_HOST=${PMA_HOST}
-  #  ports:
-  #    - "${PMA_PORT}:80"
+  mysql-db:
+    container_name: mysql-gaos
+    image: mysql:latest
+    volumes:
+      - ${PROJECT_DIR}/mysql-data:/var/lib/mysql
+      - ${PROJECT_DIR}/config/database:/home/database
+    networks:
+      - network-gaos
+    ports:
+      - "${MYSQL_PORT}:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+
+  phpmyadmin:
+    depends_on:
+      - mysql-db
+    container_name: phpmyadmin-gaos
+    image: phpmyadmin/phpmyadmin:latest
+    networks:
+      - network-gaos
+    environment:
+      - PMA_HOST=${PMA_HOST}
+    ports:
+      - "${PMA_PORT}:80"
 
 networks:
   network-gaos:

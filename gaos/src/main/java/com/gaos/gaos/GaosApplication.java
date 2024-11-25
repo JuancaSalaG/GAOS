@@ -8,6 +8,5 @@ public class GaosApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(GaosApplication.class, args);
-		System.out.println("Hello World!!");
 	}
 }
