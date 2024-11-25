@@ -1,0 +1,34 @@
+# Ignore specific folders
+config/docker/docker-compose.yml
+config/docker/docker-compose.prod.yml
+
+# Ignore generated or unnecessary files
+*.log
+*.tmp
+*.swp
+
+# Ignore local builds and dependencies
+**/build/
+**/out/
+.gradle/
+.idea/
+.vscode/
+*.iml
+
+# Ignore persistent data
+mysql-data/
+**/*.db
+
+# Ignore local settings
+*.env
+.env.*
+.DS_Store
+Thumbs.db
+
+# Ignore wrappers and temporary tools
+**/gradle/wrapper/gradle-wrapper.jar
+**/gradle/wrapper/gradle-wrapper.properties
+
+# Exclude Docker and database configuration scripts from final image context
+config/database/migrations.sh
+config/database/sql/

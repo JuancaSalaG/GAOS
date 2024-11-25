@@ -1,0 +1,10 @@
+FROM openjdk:21-jdk-slim
+WORKDIR /home/gaos
+RUN apt-get update && apt-get install -y \
+    maven \
+    && mvn --version
+COPY gaos /home/gaos
+RUN mvn dependency:resolve
+RUN mvn compile
+EXPOSE 8080
+CMD ["tail", "-f", "/dev/null"]

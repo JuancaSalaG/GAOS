@@ -1,13 +1,32 @@
 name: integrador-gaos
 services:
+
+  app:
+    container_name: app-gaos
+    build:
+      context: ${PROJECT_DIR}
+      dockerfile: ${PROJECT_DIR}/config/docker/Dockerfile.dev
+    volumes:
+      - ${PROJECT_DIR}/config/database:/home/database
+    restart: always
+    networks:
+      - network-gaos
+    env_file:
+      - ${PROJECT_DIR}/config/.dev.env
+    ports:
+      - "${APP_PORT}:8080"
+    depends_on:
+      - mysql-db
+    command: ["/home/database/migrations.sh"]
+
   mysql-db:
     container_name: mysql-gaos
     image: mysql:latest
-    restart: always
     volumes:
-      - mysql-data:/var/lib/mysql
+      - ${PROJECT_DIR}/mysql-data:/var/lib/mysql
     networks:
-      - mysql-phpmyadmin
+      - network-gaos
+    restart: always
     ports:
       - "${MYSQL_PORT}:3306"
     environment:
@@ -20,28 +39,17 @@ services:
     depends_on:
       - mysql-db
     container_name: phpmyadmin-gaos
-    restart: always
     image: phpmyadmin/phpmyadmin:latest
+    restart: always
     networks:
-      - mysql-phpmyadmin
+      - network-gaos
     environment:
       - PMA_HOST=${PMA_HOST}
     ports:
       - "${PMA_PORT}:80"
 
-  script-runner:
-    container_name: script-runner-gaos
-    image: mysql:latest
-    volumes:
-      - ${PROJECT_DIR}/config/database:/home/database
-    networks:
-      - mysql-phpmyadmin
-    env_file:
-      - ${PROJECT_DIR}/config/.dev.env
-    command: ["/home/database/migrations.sh"]
-
 networks:
-  mysql-phpmyadmin:
+  network-gaos:
 
 volumes:
   mysql-data:
