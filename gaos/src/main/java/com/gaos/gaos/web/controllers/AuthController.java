@@ -4,10 +4,15 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 
+import com.gaos.gaos.domain.dao.AuthDTO;
+import com.gaos.gaos.domain.dao.UsersDTO;
 import com.gaos.gaos.domain.services.AuthService;
 import com.gaos.gaos.persistence.entity.Auth;
 
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
@@ -39,6 +44,14 @@ public class AuthController {
                 .map(authUpdated -> new ResponseEntity<>(authUpdated, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<UsersDTO> postMethodName(@RequestBody AuthDTO entity) {
+        return authService.loginUser(entity)
+                .map(user -> new ResponseEntity<>(user, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.FORBIDDEN));
+    }
+    
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAuth(@PathVariable int authId) {

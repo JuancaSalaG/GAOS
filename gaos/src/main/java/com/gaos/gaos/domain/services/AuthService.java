@@ -7,6 +7,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.gaos.gaos.domain.dao.AuthDTO;
+import com.gaos.gaos.domain.dao.UsersDTO;
 import com.gaos.gaos.domain.interfaces.AuthRepository;
 import com.gaos.gaos.persistence.entity.Auth;
 
@@ -32,6 +34,10 @@ public class AuthService {
             BeanUtils.copyProperties(authData, auth);
             return authRepository.save(auth);
         });
+    }
+
+    public Optional<UsersDTO> loginUser(AuthDTO authDTO) {
+        return authRepository.getUserByAuth(authDTO);
     }
 
     public boolean deleteAuth(int authId) {
