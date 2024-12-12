@@ -35,14 +35,14 @@ public class PersonController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> updatePerson(@PathVariable int personId, @RequestBody Person newPerson) {
+    public ResponseEntity<Person> updatePerson(@PathVariable("id") int personId, @RequestBody Person newPerson) {
         return personService.updatePerson(personId, newPerson)
                 .map(personUpdated -> new ResponseEntity<>(personUpdated, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePerson(@PathVariable int personId) {
+    public ResponseEntity<Void> deletePerson(@PathVariable("id") int personId) {
         if (personService.deletePerson(personId)) {
             return new ResponseEntity<Void>(HttpStatus.OK);
         } else {

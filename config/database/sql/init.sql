@@ -20,7 +20,9 @@ CREATE TABLE IF NOT EXISTS auths (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (auth_id),
-    FOREIGN KEY (person_id) REFERENCES persons(person_id)
+    FOREIGN KEY (person_id) 
+        REFERENCES persons(person_id)
+        ON DELETE CASCADE
 );
 
 -- Create roles table
@@ -34,7 +36,9 @@ CREATE TABLE IF NOT EXISTS roles (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (role_id),
-    FOREIGN KEY (person_id) REFERENCES persons(person_id)
+    FOREIGN KEY (person_id) 
+        REFERENCES persons(person_id)
+        ON DELETE CASCADE
 );
 
 -- Create patients table

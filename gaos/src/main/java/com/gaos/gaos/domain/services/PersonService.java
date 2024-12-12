@@ -40,7 +40,7 @@ public class PersonService {
 
     public Optional<Person> updatePerson(int personId, Person person) {
         return personRepository.getById(personId).map(personData -> {
-            BeanUtils.copyProperties(personData, person);
+            BeanUtils.copyProperties(person, personData);
             return personRepository.save(person);
         });
     }
